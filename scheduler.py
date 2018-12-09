@@ -17,7 +17,6 @@ class Schedule():
     def total(self):
         return sum([event[1] for event in self.events])
 
-
 class Scheduler():
 
     def file_parser(self, path):
@@ -36,7 +35,7 @@ class Scheduler():
 
         return activities
 
-    def overlapping_events(self, start, end, schedules):
+    def overlaps(self, start, end, schedules):
 
         section_duration = 0
 
@@ -59,7 +58,7 @@ class Scheduler():
 
         schedules = []
 
-        lunch = ('Lunch', 60)
+        lunch = ('Lunch Break', 60)
 
         for _ in range(teams):
             schedules.append(Schedule())
@@ -71,36 +70,11 @@ class Scheduler():
                 event = random.choice(activities.items())
                 others = schedules[:index]+schedules[index+1:]
                 if event not in schedule.events:
-                    if event not in self.overlapping_events(schedule.total(), schedule.total()+event[1], others):
+                    if event not in self.overlaps(schedule.total(), schedule.total()+event[1], others):
                         schedule.events.append(event)
-                    # elif s[-1] != act and s[-1][1] >= act[1]:
-                    #     schedule.append(act)
-
-                    # for s in schedules[index:] + schedules[:index + 1]:
-                    #     if sum([event[1] for event in schedule]) > sum([event[1] for event in s]):
-                    #         schedule.append(act)
-                    #     elif s[-1] != act and s[-1][1] >= act[1]:
-                    #         schedule.append(act)
-
-
-        # for schedule in schedules:
-        #     activity_pool = activities
-        #     while sum([event[1] for event in schedule]) < 420:
-        #         try:
-        #             new_item = activity_pool.popitem()
-        #             if new_item not in schedule:
-        #                 schedule.append(new_item)
-        #         except KeyError as e:
-        #             break
-
-        # while sum([event[1] for event in s for s in schedules]) < 420:
-        #     if 135 < sum([event[1] for event in schedule for schedule in schedules]) < 180:
-        #         schedule.append(('Lunch', 60))
-        #     elif sum([event[1] for event in schedule for schedule in schedules]) < 120:
-        #         schedule.append(activities.popitem())
-
 
         return schedules
+
 
 a = Scheduler()
 
@@ -108,7 +82,7 @@ activities = a.file_parser('activities.txt')
 
 sch = Schedule()
 
-teams = 6
+teams = 12
 
 b = a.scheduler(teams)
 
