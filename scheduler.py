@@ -11,7 +11,8 @@ parser = argparse.ArgumentParser(description=
                                  """)
 class Schedule():
 
-    events_list = []
+    def __init__(self):
+        self.events_list = []
 
     def total(self):
         return sum([event[1] for event in self.events_list])
@@ -45,15 +46,17 @@ class Scheduler():
             schedules.append(Schedule())
 
         for schedule in schedules:
-            schedule.events_list.append(random.choice(activities.items()))
+            acts = activities
+            schedule.events_list.append(acts.popitem())
 
         for index, schedule in enumerate(schedules):
             while schedule.total() < 420:
                 act = random.choice(activities.items())
+                others = schedules[:index]+schedules[index+1:]
                 if act not in schedule.events_list:
-                    if schedule.total() > max([schedule.total() for schedule in schedules[:index]+schedules[index+1:]]):
+                    if schedule.total() > max([schedule.total() for schedule in others]):
                         schedule.events_list.append(act)
-                    elif act not in [s.events_list[-1] for s in schedules] and act[1] >= max([s.events_list[-1][1] for s in schedules]):
+                    elif act not in [s.events_list[-1] for s in others] and act[1] < max([s.events_list[-1][1] for s in others]):
                         schedule.events_list.append(act)
                     else:
                         break
@@ -88,6 +91,25 @@ class Scheduler():
 
 a = Scheduler()
 
-acts = a.file_parser('activities.txt')
+activities = a.file_parser('activities.txt')
 
 sch = Schedule()
+
+teams = 3
+
+b = a.scheduler(teams)
+
+for i in b:
+    print i.events_list
+
+
+# schedules = []
+# for _ in range(teams):
+#     instance = Schedule()
+#     schedules.append(instance)
+# for schedule in schedules:
+#     act = random.choice(activities.items())
+#     schedule.events_list.append(act)
+#
+# for b in schedules:
+#     print b.events_list
