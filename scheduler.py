@@ -9,6 +9,13 @@ parser = argparse.ArgumentParser(description=
                                  and produces a schedule 
                                  for said number of teams.
                                  """)
+class Schedule():
+
+    events_list = []
+
+    def total(self):
+        return sum([event[1] for event in self.events_list])
+
 
 class Scheduler():
 
@@ -28,26 +35,36 @@ class Scheduler():
 
         return activities
 
-    def schedule(self, teams):
+    def scheduler(self, teams):
 
         activities = self.file_parser('activities.txt')
 
         schedules = []
+
         for _ in range(teams):
-            schedules.append([])
+            schedules.append(Schedule())
 
         for schedule in schedules:
-            schedule.append(random.choice(activities.items()))
+            schedule.events_list.append(random.choice(activities.items()))
 
         for index, schedule in enumerate(schedules):
-            while sum([event[1] for event in schedule]) < 420:
+            while schedule.total() < 420:
                 act = random.choice(activities.items())
-                if act not in schedule:
-                    for s in schedules[index:] + schedules[:index + 1]:
-                        if sum([event[1] for event in schedule]) > sum([event[1] for event in s]):
-                            schedule.append(act)
-                        elif s[-1] != act and s[-1][1] >= act[1]:
-                            schedule.append(act)
+                if act not in schedule.events_list:
+                    if schedule.total() > max([schedule.total() for schedule in schedules[:index]+schedules[index+1:]]):
+                        schedule.events_list.append(act)
+                    elif act not in [s.events_list[-1] for s in schedules] and act[1] >= max([s.events_list[-1][1] for s in schedules]):
+                        schedule.events_list.append(act)
+                    else:
+                        break
+                    # elif s[-1] != act and s[-1][1] >= act[1]:
+                    #     schedule.append(act)
+
+                    # for s in schedules[index:] + schedules[:index + 1]:
+                    #     if sum([event[1] for event in schedule]) > sum([event[1] for event in s]):
+                    #         schedule.append(act)
+                    #     elif s[-1] != act and s[-1][1] >= act[1]:
+                    #         schedule.append(act)
 
 
         # for schedule in schedules:
@@ -71,6 +88,6 @@ class Scheduler():
 
 a = Scheduler()
 
-a.file_parser('activities.txt')
+acts = a.file_parser('activities.txt')
 
-
+sch = Schedule()
