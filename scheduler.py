@@ -22,8 +22,8 @@ class Scheduler():
 
     def file_parser(self, path):
 
-        with open(path) as file:
-            content = file.readlines()
+        with open(path) as f:
+            content = f.readlines()
 
         activities = {}
 
@@ -32,9 +32,22 @@ class Scheduler():
             if components[1] == 'sprint':
                 activities[components[0]] = 15
             else:
-                activities[components[0]] = int(re.findall(r'\d+',components[1])[0])  # get the numbers only
+                activities[components[0]] = int(re.findall('\d+',components[1])[0])  # get the numbers only
 
         return activities
+
+    def overlapping_events(self, duration, Schedule):
+
+        section_duration = 0
+
+        events = []
+
+        for event in Schedule.events_list:
+            while section_duration >= duration:
+                section_duration += event[1]
+                events.append(event)
+
+        return events
 
     def scheduler(self, teams):
 
@@ -56,7 +69,7 @@ class Scheduler():
                 if act not in schedule.events_list:
                     if schedule.total() > max([schedule.total() for schedule in others]):
                         schedule.events_list.append(act)
-                    elif act not in [s.events_list[-1] for s in others] and act[1] < max([s.events_list[-1][1] for s in others]):
+                    elif act not in [s.events_list[-1] for s in others] and act[1] <= max([s.events_list[-1][1] for s in others]):
                         schedule.events_list.append(act)
                     else:
                         break
@@ -113,3 +126,7 @@ for i in b:
 #
 # for b in schedules:
 #     print b.events_list
+
+
+# def iterator(schedule):
+#
