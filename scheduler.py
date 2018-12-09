@@ -36,16 +36,18 @@ class Scheduler():
 
         return activities
 
-    def overlapping_events(self, duration, Schedule):
+    def overlapping_events(self, start, end, schedule):
 
         section_duration = 0
 
         events = []
 
-        for event in Schedule.events_list:
-            while section_duration >= duration:
-                section_duration += event[1]
+        for event in schedule.events_list:
+            section_duration += event[1]
+            if section_duration > start:
                 events.append(event)
+            if section_duration >= end:
+                break
 
         return events
 
@@ -55,21 +57,20 @@ class Scheduler():
 
         schedules = []
 
+        lunch = ('Lunch', 60)
+
         for _ in range(teams):
             schedules.append(Schedule())
 
-        for schedule in schedules:
-            acts = activities
-            schedule.events_list.append(acts.popitem())
-
         for index, schedule in enumerate(schedules):
             while schedule.total() < 420:
+                if schedule.total() > 150 and lunch not in schedule.events_list:
+                    schedule.events_list.append(lunch)
+                    continue
                 act = random.choice(activities.items())
                 others = schedules[:index]+schedules[index+1:]
                 if act not in schedule.events_list:
-                    if schedule.total() > max([schedule.total() for schedule in others]):
-                        schedule.events_list.append(act)
-                    elif act not in [s.events_list[-1] for s in others] and act[1] <= max([s.events_list[-1][1] for s in others]):
+                    if act not in [self.overlapping_events(schedule.total(), schedule.total()+act[1], s) for s in others]:
                         schedule.events_list.append(act)
                     else:
                         break
@@ -108,12 +109,13 @@ activities = a.file_parser('activities.txt')
 
 sch = Schedule()
 
-teams = 3
+teams = 6
 
 b = a.scheduler(teams)
 
 for i in b:
-    print i.events_list
+    print i.events_list, i.total()
+
 
 
 # schedules = []
