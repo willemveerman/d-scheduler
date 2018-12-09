@@ -1,26 +1,28 @@
 import argparse
 import re
 import random
+import datetime as dt
 
 parser = argparse.ArgumentParser(description=
                                  """
-                                 Takes a text file listing activities 
-                                 and a number as input 
-                                 and produces a schedule 
+                                 Takes as input a text file listing activities 
+                                 and a number,  
+                                 and produces an activity schedule 
                                  for said number of teams.
                                  """)
 class Schedule():
-
+    """A class for storing a schedule for a single team"""
     def __init__(self):
         self.events = []
 
     def total(self):
+        """Returns the total duration of all activities in the object"""
         return sum([event[1] for event in self.events])
 
 class Scheduler():
 
     def file_parser(self, path):
-
+        """Parse a file and return a dict of str(activity):int(duration)"""
         with open(path) as f:
             content = f.readlines()
 
@@ -36,7 +38,7 @@ class Scheduler():
         return activities
 
     def overlaps(self, start, end, schedules):
-
+        """Find in schedules all activities that overlap with a given start and end time"""
         section_duration = 0
 
         events = []
@@ -52,9 +54,13 @@ class Scheduler():
 
         return events
 
-    def scheduler(self, teams):
+    def scheduler(self, teams, activities):
+        """Given n teams and a list of activites and their durations, produce a schedule
+           for each team that does not overlap with that of any other team"""
+        if teams > 13:
+            return "You cannot divide into more than 13 teams without overlaps (if you want to avoid gaps)"
 
-        activities = self.file_parser('activities.txt')
+        act_copy = activities.items()
 
         schedules = []
 
@@ -64,31 +70,41 @@ class Scheduler():
             schedules.append(Schedule())
 
         for index, schedule in enumerate(schedules):
-            while schedule.total() < 420:
-                if schedule.total() > 150 and lunch not in schedule.events:
+            while schedule.total() < 420:  # arbitrary
+                if schedule.total() > 150 and lunch not in schedule.events:  # arbitrary
                     schedule.events.append(lunch)
-                event = random.choice(activities.items())
-                others = schedules[:index]+schedules[index+1:]
+                try:
+                    event = activities.popitem()  # ensure that every activity is tried at least once
+                except KeyError:
+                    event = random.choice(act_copy)
+                others = schedules[:index]+schedules[index+1:]  # every schedule except the one in the loop
                 if event not in schedule.events:
                     if event not in self.overlaps(schedule.total(), schedule.total()+event[1], others):
                         schedule.events.append(event)
 
         return schedules
 
+    def output(self, schedules):
+
+        def make_schedule(schedule):
+
+            time = dt.time(9)
+
+            lines = []
+
+            for event in schedule.events:
+                lines.append(time+dt.time.min(), event[0], event[1])
+
+
 
 a = Scheduler()
 
-activities = a.file_parser('activities.txt')
+teams = 14
 
-sch = Schedule()
-
-teams = 12
-
-b = a.scheduler(teams)
+b = a.scheduler(teams, a.file_parser('activities.txt'))
 
 for i in b:
     print i.events, i.total()
-
 
 
 # schedules = []
