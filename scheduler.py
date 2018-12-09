@@ -49,6 +49,7 @@ class Scheduler():
                         elif s[-1] != act and s[-1][1] >= act[1]:
                             schedule.append(act)
 
+
         # for schedule in schedules:
         #     activity_pool = activities
         #     while sum([event[1] for event in schedule]) < 420:
