@@ -12,10 +12,10 @@ parser = argparse.ArgumentParser(description=
 class Schedule():
 
     def __init__(self):
-        self.events_list = []
+        self.events = []
 
     def total(self):
-        return sum([event[1] for event in self.events_list])
+        return sum([event[1] for event in self.events])
 
 
 class Scheduler():
@@ -36,18 +36,20 @@ class Scheduler():
 
         return activities
 
-    def overlapping_events(self, start, end, schedule):
+    def overlapping_events(self, start, end, schedules):
 
         section_duration = 0
 
         events = []
 
-        for event in schedule.events_list:
-            section_duration += event[1]
-            if section_duration > start:
-                events.append(event)
-            if section_duration >= end:
-                break
+        for schedule in schedules:
+            for event in schedule.events:
+                section_duration += event[1]
+                if section_duration > start:
+                    events.append(event)
+                if section_duration >= end:
+                    section_duration = 0
+                    break
 
         return events
 
@@ -64,16 +66,13 @@ class Scheduler():
 
         for index, schedule in enumerate(schedules):
             while schedule.total() < 420:
-                if schedule.total() > 150 and lunch not in schedule.events_list:
-                    schedule.events_list.append(lunch)
-                    continue
-                act = random.choice(activities.items())
+                if schedule.total() > 150 and lunch not in schedule.events:
+                    schedule.events.append(lunch)
+                event = random.choice(activities.items())
                 others = schedules[:index]+schedules[index+1:]
-                if act not in schedule.events_list:
-                    if act not in [self.overlapping_events(schedule.total(), schedule.total()+act[1], s) for s in others]:
-                        schedule.events_list.append(act)
-                    else:
-                        break
+                if event not in schedule.events:
+                    if event not in self.overlapping_events(schedule.total(), schedule.total()+event[1], others):
+                        schedule.events.append(event)
                     # elif s[-1] != act and s[-1][1] >= act[1]:
                     #     schedule.append(act)
 
@@ -114,7 +113,7 @@ teams = 6
 b = a.scheduler(teams)
 
 for i in b:
-    print i.events_list, i.total()
+    print i.events, i.total()
 
 
 
