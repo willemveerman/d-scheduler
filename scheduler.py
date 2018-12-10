@@ -34,7 +34,13 @@ class Schedule():
 class Scheduler():
 
     def file_parser(self, path):
-        """Returns a dict of str(activity):int(duration)"""
+        """
+        Returns a dict of str(activity):int(duration)
+
+        Parameters
+        ----------
+        path : str
+        """
         with open(path) as f:
             content = f.readlines()
 
@@ -50,7 +56,14 @@ class Scheduler():
         return activities
 
     def overlaps(self, start, end, schedules):
-        """Find in schedules all activities that overlap with a given start and end time"""
+        """
+        Find in schedules all activities that overlap with a given start and end time
+
+        Parameters
+        ----------
+        start, end : int
+        schedules : list
+        """
         section_duration = 0
 
         events = []
@@ -67,8 +80,15 @@ class Scheduler():
         return events
 
     def scheduler(self, teams, activities):
-        """Given n teams and a dict of activites and their durations, produce a schedule
-           for each team that does not overlap with that of any other team"""
+        """
+        Given n teams and a dict of activites and their durations, produce a schedule
+        for each team that does not overlap with that of any other team
+
+        Parameters
+        ----------
+        teams : int
+        activities : dict
+        """
         if teams > 13:
             return "You cannot divide into more than 13 teams without overlaps (if you want to avoid gaps)"
 
