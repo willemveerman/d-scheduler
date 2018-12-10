@@ -3,33 +3,19 @@ import re
 import random
 import datetime as dt
 
-parser = argparse.ArgumentParser(description=
-                                 """
-                                 Takes as input a text file listing activities 
-                                 and a number,  
-                                 and produces an activity schedule 
-                                 for said number of teams.
-                                 """)
-
-parser.add_argument('-i', '--input',
-                    help='path to the input file')
-
-parser.add_argument('-r', '--region',
-                    default='eu-west-2',
-                    help='AWS region')
-
-parser.add_argument('-n', '--name',
-                    default='*',
-                    help='EC2 instance name')
-
 
 class Schedule():
     """A schedule for a single team"""
+
     def __init__(self):
         self.events = []
 
     def total(self):
-        """The total duration of all activities in the schedule"""
+        """
+        The total duration of all activities in the schedule
+
+        :return: int
+        """
         return sum([event[1] for event in self.events])
 
 
@@ -39,9 +25,8 @@ class Scheduler():
         """
         Returns a dict of str(activity):int(duration)
 
-        Parameters
-        ----------
-        path : str
+        :param path: str
+        :return: dict
         """
         with open(path) as f:
             content = f.readlines()
@@ -61,10 +46,10 @@ class Scheduler():
         """
         Find in all schedules all activities that overlap with a given start and end time
 
-        Parameters
-        ----------
-        start, end : int
-        schedules : list
+        :param start: int
+        :param end: int
+        :param schedules: list
+        :return: list
         """
         section_duration = 0
 
@@ -86,10 +71,9 @@ class Scheduler():
         Produces schedules for n teams from an activities file.
         The activities in each team's schedule don't overlap with those of any other.
 
-        Parameters
-        ----------
-        teams : int
-        activities : dict
+        :param teams: int
+        :param path: str
+        :return: list
         """
         if teams > 13:
             return "You cannot divide into more than 13 teams without overlaps (if you want to avoid gaps)"
@@ -121,33 +105,52 @@ class Scheduler():
         return schedules
 
     def make_schedule(self, schedule):
+        """
+        Produces a formatted schedule from a Schedule() object.
 
-        time = dt.datetime(2018,12,10,9)
+        :param schedule: Schedule()
+        :return: list
+        """
 
-        count = 0
+        nine = dt.datetime(2018,12,10,9)
+
+        elapsed = 0
+
+        agenda_strings = []
 
         for event in schedule.events:
-            if count == 0:
-                print(time.strftime('%I:%M %p : '), event[0], event[1])
+            time = nine + dt.timedelta(minutes=elapsed)
+            elapsed += event[1]
+            if event[1] == 15:
+                event = (event[0], "sprint")
             else:
-                new_time = time + dt.timedelta(minutes=count)
-                print(new_time.strftime('%I:%M %p : '), event[0], event[1])
-            count += event[1]
+                event = (event[0], str(event[1])+"min")
+            agenda_strings.append(time.strftime('%I:%M %p : ') + event[0] + " " + event[1])
 
         time = dt.datetime(2018, 12, 10, 17)
-        print(time.strftime('%I:%M %p : '), "Staff Motivation Presentation")
+        agenda_strings.append(time.strftime('%I:%M %p : ') + "Staff Motivation Presentation")
+
+        return agenda_strings
 
 
     def output(self, schedules):
+        """
+        Print a list for formatted schedules to the console.
 
-        for schedule in schedules:
-            return self.make_schedule(schedule)
+        :param schedules: list
+        """
+
+        for index, schedule in enumerate(schedules):
+            print
+            print "Team "+str(index+1)+":"
+            for activity in self.make_schedule(schedule):
+                print activity
 
 
 
 a = Scheduler()
 
-teams = 6
+teams = 10
 
 b = a.scheduler(teams, 'activities.txt')
 
