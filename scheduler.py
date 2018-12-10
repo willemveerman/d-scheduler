@@ -75,7 +75,7 @@ class Scheduler():
         :param path: str
         :return: list
         """
-        if teams > 13:
+        if teams > 10:
             return "You cannot divide into more than 13 teams without overlaps (if you want to avoid gaps)"
 
         activities = self.file_parser(path)
