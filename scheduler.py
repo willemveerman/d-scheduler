@@ -22,6 +22,7 @@ parser.add_argument('-n', '--name',
                     default='*',
                     help='EC2 instance name')
 
+
 class Schedule():
     """A schedule for a single team"""
     def __init__(self):
@@ -30,6 +31,7 @@ class Schedule():
     def total(self):
         """The total duration of all activities in the schedule"""
         return sum([event[1] for event in self.events])
+
 
 class Scheduler():
 
@@ -79,10 +81,10 @@ class Scheduler():
 
         return events
 
-    def scheduler(self, teams, activities):
+    def scheduler(self, teams, path):
         """
-        Given n teams and a dict of activites and their durations, produce a schedule
-        for each team that does not overlap with that of any other team
+        Produces schedules for n teams from an activities files.
+        The activities in each team's schedule don't overlap with those of any other team
 
         Parameters
         ----------
@@ -91,6 +93,8 @@ class Scheduler():
         """
         if teams > 13:
             return "You cannot divide into more than 13 teams without overlaps (if you want to avoid gaps)"
+
+        activities = self.file_parser(path)
 
         act_copy = activities.items()
 
