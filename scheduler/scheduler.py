@@ -3,7 +3,6 @@ import re
 import random
 import datetime as dt
 
-
 class Schedule():
     """
     A schedule for a single team
