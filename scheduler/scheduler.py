@@ -5,14 +5,16 @@ import datetime as dt
 
 
 class Schedule():
-    """A schedule for a single team"""
+    """
+    A schedule for a single team
+    """
 
     def __init__(self):
         self.events = []
 
     def total(self):
         """
-        The total duration of all activities in the schedule
+        Returns the total duration of all activities in the schedule
 
         :return: int
         """
@@ -23,7 +25,7 @@ class Scheduler():
 
     def file_parser(self, path):
         """
-        Returns a dict of str(activity):int(duration)
+        Returns a dict of str(activity):int(duration) from a file of activities
 
         :param path: str
         :return: dict
@@ -44,7 +46,7 @@ class Scheduler():
 
     def overlaps(self, start, end, schedules):
         """
-        Find in all schedules all activities that overlap with a given start and end time
+        Returns all activities in schedules that overlap with a given start and end time
 
         :param start: int
         :param end: int
@@ -76,7 +78,7 @@ class Scheduler():
         :return: list
         """
         if teams > 10:
-            return "You cannot divide into more than 13 teams without overlaps (if you want to avoid gaps)"
+            raise ValueError("Scheduling for greater than 10 teams can cause performance issues.")
 
         activities = self.file_parser(path)
 
@@ -106,13 +108,13 @@ class Scheduler():
 
     def make_schedule(self, schedule):
         """
-        Produces a formatted schedule from a Schedule() object.
+        Produces a formatted schedule from a Schedule() object
 
         :param schedule: Schedule()
         :return: list
         """
 
-        nine = dt.datetime(2018,12,10,9)
+        nine = dt.datetime(2018,12,10,9)  # 9AM
 
         elapsed = 0
 
@@ -127,15 +129,15 @@ class Scheduler():
                 event = (event[0], str(event[1])+"min")
             agenda_strings.append(time.strftime('%I:%M %p : ') + event[0] + " " + event[1])
 
-        time = dt.datetime(2018, 12, 10, 17)
-        agenda_strings.append(time.strftime('%I:%M %p : ') + "Staff Motivation Presentation")
+        five = dt.datetime(2018, 12, 10, 17)  # 5PM
+        agenda_strings.append(five.strftime('%I:%M %p : ') + "Staff Motivation Presentation")
 
         return agenda_strings
 
 
     def output(self, schedules):
         """
-        Print a list for formatted schedules to the console.
+        Prints a list of formatted schedules
 
         :param schedules: list
         """
@@ -150,14 +152,13 @@ class Scheduler():
 
 a = Scheduler()
 
-teams = 10
+teams = 11
 
 b = a.scheduler(teams, 'activities.txt')
 
-print a.output(b)
+#print a.output(b)
 
-for i in b:
-    print i.events, i.total()
+print a.make_schedule(b[1])
 
 
 # schedules = []
