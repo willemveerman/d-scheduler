@@ -76,8 +76,6 @@ class Scheduler():
         :param path: str
         :return: list
         """
-        if teams > 10:
-            raise ValueError("Scheduling for greater than 10 teams can cause performance issues.")
 
         activities = self.file_parser(path)
 
@@ -151,7 +149,7 @@ class Scheduler():
 
 a = Scheduler()
 
-teams = 11
+teams = 12
 
 b = a.scheduler(teams, 'activities.txt')
 
