@@ -59,7 +59,7 @@ class Scheduler():
 
     def overlaps(self, start, end, schedules):
         """
-        Find in schedules all activities that overlap with a given start and end time
+        Find in all schedules all activities that overlap with a given start and end time
 
         Parameters
         ----------
@@ -83,8 +83,8 @@ class Scheduler():
 
     def scheduler(self, teams, path):
         """
-        Produces schedules for n teams from an activities files.
-        The activities in each team's schedule don't overlap with those of any other team
+        Produces schedules for n teams from an activities file.
+        The activities in each team's schedule don't overlap with those of any other.
 
         Parameters
         ----------
@@ -120,16 +120,28 @@ class Scheduler():
 
         return schedules
 
+    def make_schedule(self, schedule):
+
+        time = dt.datetime(2018,12,10,9)
+
+        count = 0
+
+        for event in schedule.events:
+            if count == 0:
+                print(time.strftime('%I:%M %p : '), event[0], event[1])
+            else:
+                new_time = time + dt.timedelta(minutes=count)
+                print(new_time.strftime('%I:%M %p : '), event[0], event[1])
+            count += event[1]
+
+        time = dt.datetime(2018, 12, 10, 17)
+        print(time.strftime('%I:%M %p : '), "Staff Motivation Presentation")
+
+
     def output(self, schedules):
 
-        def make_schedule(schedule):
-
-            time = dt.time(9)
-
-            lines = []
-
-            for event in schedule.events:
-                lines.append(time+dt.time.min(), event[0], event[1])
+        for schedule in schedules:
+            return self.make_schedule(schedule)
 
 
 
@@ -137,7 +149,9 @@ a = Scheduler()
 
 teams = 6
 
-b = a.scheduler(teams, a.file_parser('activities.txt'))
+b = a.scheduler(teams, 'activities.txt')
+
+print a.output(b)
 
 for i in b:
     print i.events, i.total()
