@@ -77,7 +77,8 @@ class Scheduler():
         """
 
         if teams > 9 and not risky:
-            raise ValueError("""Scheduling for 10 or more teams with the current set of activities can cause problems.
+            raise ValueError("""Scheduling for 10 or more teams with the current set of activities 
+                                can cause performance problems.
                                 Scheduling for more than 13 is impossible (wihtout gaps)
                                 Remove this warning by passing risky=True.""")
 
