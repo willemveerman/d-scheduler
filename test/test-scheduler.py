@@ -5,7 +5,7 @@ class SchedulerTestCase(unittest.TestCase):
     def setUp(self):
         self.scheduler = scheduler.Scheduler()
 
-        self.schedules = self.scheduler.scheduler(8, '../scheduler/activities.txt')
+        self.schedules = self.scheduler.scheduler(6, '../scheduler/activities.txt')
 
         self.schedules_1 = scheduler.Schedule()
         self.schedules_2 = scheduler.Schedule()
@@ -27,9 +27,9 @@ class TestSchedulerOverlaps(SchedulerTestCase):
             ('Indiano Drizzle', 45), ('Buggy Driving', 30)])
 
 class TestSchedulerMakeSchedule(SchedulerTestCase):
-    def test_make_schedules(self):
+    def test_make_schedules_findOverlaps(self):
 
-        for minute in range(400):
+        for minute in range(450):
             event_set = set()
             overlaps = self.scheduler.overlaps(minute, minute, self.schedules)
             overlaps = filter(lambda a: a != ('Lunch Break', 60), overlaps)

@@ -65,7 +65,7 @@ class Scheduler():
 
         return events
 
-    def scheduler(self, teams, path):
+    def scheduler(self, teams, path, risky=False):
         """
         Produces schedules for n teams from an activities file.
         The activities in each team's schedule don't overlap with those of any other.
@@ -74,6 +74,10 @@ class Scheduler():
         :param path: str
         :return: list
         """
+
+        if teams > 10 and risky:
+            raise ValueError("""Scheduling for more than 10 teams with the current set of activities can cause problems.
+                                Remove this warning by passing risky=True.""")
 
         activities = self.file_parser(path)
 
