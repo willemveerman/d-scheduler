@@ -152,6 +152,3 @@ class Scheduler():
             for activity in self.make_schedule(schedule):
                 print activity
 
-a=Scheduler()
-b=a.scheduler(6,'activities.txt', risky=False)
-a.output(b)

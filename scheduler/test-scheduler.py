@@ -37,5 +37,9 @@ class TestSchedulerMakeSchedule(SchedulerTestCase):
                 event_set.add(event)
             self.assertTrue(len(overlaps) == len(event_set))
 
+a=Scheduler()
+b=a.scheduler(6,'activities.txt', risky=False)
+a.output(b)
+
 if __name__ == '__main__':
     unittest.main()
