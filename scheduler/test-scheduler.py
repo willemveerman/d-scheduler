@@ -1,14 +1,14 @@
 import unittest
-from scheduler import scheduler
+from scheduler import Scheduler, Schedule
 
 class SchedulerTestCase(unittest.TestCase):
     def setUp(self):
-        self.scheduler = scheduler.Scheduler()
+        self.scheduler = Scheduler()
 
-        self.schedules = self.scheduler.scheduler(9, '../scheduler/activities.txt')
+        self.schedules = self.scheduler.scheduler(8, 'activities.txt',risky=False)
 
-        self.schedules_1 = scheduler.Schedule()
-        self.schedules_2 = scheduler.Schedule()
+        self.schedules_1 = Schedule()
+        self.schedules_2 = Schedule()
 
         self.schedules_1.events = [('Giant Puzzle Dinosaurs', 30), ('Enigma Challenge', 45), ('Human Table Football', 30)]
         self.schedules_2.events = [('Salsa & Pickles', 15), ('Indiano Drizzle', 45), ('Buggy Driving', 30)]

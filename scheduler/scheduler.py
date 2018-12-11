@@ -151,6 +151,5 @@ class Scheduler():
                 print activity
 
 a=Scheduler()
-b=a.scheduler(11,'activities.txt',risky=False)
-
+b=a.scheduler(6,'activities.txt')
 a.output(b)
