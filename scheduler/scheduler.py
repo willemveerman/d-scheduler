@@ -16,7 +16,7 @@ class Schedule():
 
         :return: int
         """
-        return sum([event[1] for event in self.events])
+        return sum((event[1] for event in self.events))
 
 
 class Scheduler():
@@ -151,5 +151,5 @@ class Scheduler():
                 print activity
 
 a=Scheduler()
-b=a.scheduler(6,'activities.txt')
+b=a.scheduler(7,'activities.txt', risky=False)
 a.output(b)
