@@ -5,7 +5,7 @@ class SchedulerTestCase(unittest.TestCase):
     def setUp(self):
         self.scheduler = scheduler.Scheduler()
 
-        self.schedules = self.scheduler.scheduler(6, '../scheduler/activities.txt')
+        self.schedules = self.scheduler.scheduler(9, '../scheduler/activities.txt')
 
         self.schedules_1 = scheduler.Schedule()
         self.schedules_2 = scheduler.Schedule()

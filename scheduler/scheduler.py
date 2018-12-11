@@ -72,11 +72,13 @@ class Scheduler():
 
         :param teams: int
         :param path: str
+        :param risky: bool
         :return: list
         """
 
-        if teams > 10 and risky:
-            raise ValueError("""Scheduling for more than 10 teams with the current set of activities can cause problems.
+        if teams > 9 and not risky:
+            raise ValueError("""Scheduling for 10 or more teams with the current set of activities can cause problems.
+                                Scheduling for more than 13 is impossible (wihtout gaps)
                                 Remove this warning by passing risky=True.""")
 
         activities = self.file_parser(path)
@@ -146,3 +148,8 @@ class Scheduler():
             print "Team "+str(index+1)+":"
             for activity in self.make_schedule(schedule):
                 print activity
+
+a=Scheduler()
+b=a.scheduler(11,'activities.txt',risky=False)
+
+a.output(b)
