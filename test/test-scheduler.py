@@ -35,24 +35,7 @@ class TestSchedulerMakeSchedule(SchedulerTestCase):
             overlaps = filter(lambda a: a != ('Lunch Break', 60), overlaps)
             for event in overlaps:
                 event_set.add(event)
-            if len(overlaps) != len(event_set):
-                print minute
-                print "overlaps: ",overlaps
-                print
-                print "events: ",event_set
-                print self.scheduler.output(self.schedules)
             self.assertTrue(len(overlaps) == len(event_set))
-
-        # overlapping = [self.scheduler.overlaps(i,i,self.schedules) for i in range(420)]
-        # self.assertTrue([set(overlapping)] == overlapping)
-
-
-    # def test_file_parser_parse(self):
-    #     self.assertTrue(self.scheduler.file_parser('../scheduler/activities.txt')['Archery'] == 45)
-
-# class TestScheduler(SchedulerTestCase):
-#
-#     def test_file_parser(self):
 
 if __name__ == '__main__':
     unittest.main()

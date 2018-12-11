@@ -51,17 +51,16 @@ class Scheduler():
         :param schedules: list
         :return: list
         """
-        section_duration = 0
 
         events = []
 
         for schedule in schedules:
+            section_duration = 0
             for event in schedule.events:
                 section_duration += event[1]
                 if section_duration > start:
                     events.append(event)
                 if section_duration >= end:
-                    section_duration = 0
                     break
 
         return events
@@ -143,34 +142,3 @@ class Scheduler():
             print "Team "+str(index+1)+":"
             for activity in self.make_schedule(schedule):
                 print activity
-
-
-#
-# a = Scheduler()
-#
-# teams = 5
-#
-# b = a.scheduler(teams, 'activities.txt')
-#
-# print b[1].events
-# print b[2].events
-
-#print a.output(b)
-
-# print a.make_schedule(b[1])
-
-
-# schedules = []
-# for _ in range(teams):
-#     instance = Schedule()
-#     schedules.append(instance)
-# for schedule in schedules:
-#     act = random.choice(activities.items())
-#     schedule.events_list.append(act)
-#
-# for b in schedules:
-#     print b.events_list
-
-
-# def iterator(schedule):
-#
