@@ -94,8 +94,8 @@ class Scheduler():
             schedules.append(Schedule())
 
         for index, schedule in enumerate(schedules):
-            while schedule.total() < 420:  # arbitrary
-                if schedule.total() > 120 and lunch not in schedule.events:  # arbitrary
+            while schedule.total() <= 420:
+                if schedule.total() > 120 and lunch not in schedule.events:
                     schedule.events.append(lunch)
                 try:
                     event = activities.popitem()  # ensure that every activity is tried at least once
