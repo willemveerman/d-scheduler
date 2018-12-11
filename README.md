@@ -31,7 +31,7 @@ s.output(schedule_set)
 To test the `Scheduler()` class, run the `test-scheduler.py` file.
 
 ### Quick Example
-The test file, `test-schedules.py`, will print a set of six schedules to the console - note that the `activities.txt` file must be in the same directory.
+The test file, `test-scheduler.py`, will print a set of six schedules to the console - note that the `activities.txt` file must be in the same directory.
 
 ```bash
 $ python test-scheduler.py
