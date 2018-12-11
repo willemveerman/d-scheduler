@@ -16,7 +16,7 @@ class Schedule():
 
         :return: int
         """
-        return sum((event[1] for event in self.events))
+        return sum([event[1] for event in self.events])
 
 
 class Scheduler():
@@ -105,6 +105,8 @@ class Scheduler():
                 if event not in schedule.events:
                     if event not in self.overlaps(schedule.total(), schedule.total()+event[1], others):
                         schedule.events.append(event)
+                    else:
+                        pass
 
         return schedules
 
@@ -151,5 +153,5 @@ class Scheduler():
                 print activity
 
 a=Scheduler()
-b=a.scheduler(7,'activities.txt', risky=False)
+b=a.scheduler(6,'activities.txt', risky=True)
 a.output(b)
