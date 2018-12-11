@@ -1,4 +1,3 @@
-import argparse
 import re
 import random
 import datetime as dt
@@ -146,16 +145,19 @@ class Scheduler():
                 print activity
 
 
-
-a = Scheduler()
-
-teams = 12
-
-b = a.scheduler(teams, 'activities.txt')
+#
+# a = Scheduler()
+#
+# teams = 5
+#
+# b = a.scheduler(teams, 'activities.txt')
+#
+# print b[1].events
+# print b[2].events
 
 #print a.output(b)
 
-print a.make_schedule(b[1])
+# print a.make_schedule(b[1])
 
 
 # schedules = []
