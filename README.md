@@ -22,7 +22,7 @@ schedule_set = s.scheduler(5,'activities.py')
 
 The `make_schedule` method formats each schedule into a list of event strings whose formatting matches that of the case study.
 
-For convenience, an `output` method is also provided which prints the set of schedules to the console, properly formatted.
+For convenience, an `output` method is also provided which prints the properly-formatted set of schedules to the console.
 
 ```python
 s.output(schedule_set)
