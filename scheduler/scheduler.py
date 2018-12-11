@@ -153,10 +153,5 @@ class Scheduler():
                 print activity
 
 a=Scheduler()
-<<<<<<< HEAD
-b=a.scheduler(6,'activities.txt', risky=True)
-a.output(b)
-=======
 b=a.scheduler(6,'activities.txt', risky=False)
 a.output(b)
->>>>>>> 7a47f6903ffefa82359f7cb783a64c7397287bf0
