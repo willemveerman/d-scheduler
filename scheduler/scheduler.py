@@ -120,7 +120,7 @@ class Scheduler():
 
         elapsed = 0
 
-        agenda_strings = []
+        formatted_schedules = []
 
         for event in schedule.events:
             time = nine + dt.timedelta(minutes=elapsed)
@@ -129,12 +129,12 @@ class Scheduler():
                 event = (event[0], "sprint")
             else:
                 event = (event[0], str(event[1])+"min")
-            agenda_strings.append(time.strftime('%I:%M %p : ') + event[0] + " " + event[1])
+            formatted_schedules.append(time.strftime('%I:%M %p : ') + event[0] + " " + event[1])
 
         five = dt.datetime(2018, 12, 10, 17)  # 5PM
-        agenda_strings.append(five.strftime('%I:%M %p : ') + "Staff Motivation Presentation")
+        formatted_schedules.append(five.strftime('%I:%M %p : ') + "Staff Motivation Presentation")
 
-        return agenda_strings
+        return formatted_schedules
 
 
     def output(self, schedules):
