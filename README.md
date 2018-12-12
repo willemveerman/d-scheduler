@@ -17,7 +17,7 @@ s = scheduler.Scheduler()
 Create a set of schedules by passing a number of teams and the path to an activities text file to the `scheduler` method:
 
 ```python
-schedule_set = s.scheduler(5,'activities.py')
+schedule_set = s.scheduler(5,'activities.txt')
 ```
 
 The `make_schedule` method formats each schedule into a list of event strings whose formatting matches that of the case study.
