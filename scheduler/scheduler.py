@@ -134,8 +134,7 @@ class Scheduler():
                 event = (event[0], str(event[1])+"min")
             formatted_schedules.append(time.strftime('%I:%M %p : ') + event[0] + " " + event[1])
 
-        five = dt.datetime(2018, 12, 10, 17)  # 5PM
-        formatted_schedules.append(five.strftime('%I:%M %p : ') + "Staff Motivation Presentation")
+        formatted_schedules.append('05:00 PM : Staff Motivation Presentation')
 
         return formatted_schedules
 
