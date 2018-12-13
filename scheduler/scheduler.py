@@ -119,20 +119,18 @@ class Scheduler():
         :return: list
         """
 
-        nine = dt.datetime(2018,12,10,9)  # 9AM
-
-        elapsed = 0
+        time = dt.datetime(2018,12,10,9)  # 9AM
 
         formatted_schedules = []
 
         for event in schedule.agenda:
-            time = nine + dt.timedelta(minutes=elapsed)
-            elapsed += event[1]
+            duration = event[1]
             if event[1] == 15:
                 event = (event[0], "sprint")
             else:
                 event = (event[0], str(event[1])+"min")
             formatted_schedules.append(time.strftime('%I:%M %p : ') + event[0] + " " + event[1])
+            time = time + dt.timedelta(minutes=duration)
 
         formatted_schedules.append('05:00 PM : Staff Motivation Presentation')
 
