@@ -8,7 +8,7 @@ class Schedule():
     """
 
     def __init__(self):
-        self.events = []
+        self.agenda = []
 
     def total(self):
         """
@@ -16,10 +16,13 @@ class Schedule():
 
         :return: int
         """
-        return sum([event[1] for event in self.events])
+        return sum([event[1] for event in self.agenda])
 
 
 class Scheduler():
+
+    def __init__(self):
+        self.recursion_count = 0
 
     def file_parser(self, path):
         """
@@ -56,7 +59,7 @@ class Scheduler():
 
         for schedule in schedules:
             section_duration = 0
-            for event in schedule.events:
+            for event in schedule.agenda:
                 section_duration += event[1]
                 if section_duration > start:
                     events.append(event)
@@ -65,26 +68,21 @@ class Scheduler():
 
         return events
 
-    def scheduler(self, teams, path, risky=False):
+    def scheduler(self, teams, path):
         """
         Produces schedules for n teams from an activities file.
         The activities in each team's schedule don't overlap with those of any other.
 
         :param teams: int
         :param path: str
-        :param risky: bool
         :return: list
         """
+        activities = self.file_parser(path).items()
 
-        if teams > 9 and not risky:
-            raise ValueError("""Scheduling for 10 or more teams with the current set of activities 
-                                can cause performance problems.
-                                Scheduling for more than 13 is impossible (wihtout gaps)
-                                Remove this warning by passing risky=True.""")
+        if teams > 14 and len(activities) == 20 and ('Archery', 45) in activities:
+            raise ValueError("Scheduling for more than 14 teams with the current set of activities is impossible.")
 
-        activities = self.file_parser(path)
-
-        act_copy = activities.items()
+        random.shuffle(activities)
 
         lunch = ('Lunch Break', 60)
 
@@ -95,18 +93,21 @@ class Scheduler():
 
         for index, schedule in enumerate(schedules):
             while schedule.total() <= 420:
-                if schedule.total() > 120 and lunch not in schedule.events:
-                    schedule.events.append(lunch)
-                try:
-                    event = activities.popitem()  # ensure that every activity is tried at least once
-                except KeyError:
-                    event = random.choice(act_copy)
+                if schedule.total() > 120 and lunch not in schedule.agenda:
+                    schedule.agenda.append(lunch)
                 others = schedules[:index]+schedules[index+1:]  # every schedule except the one in the loop
-                if event not in schedule.events:
-                    if event not in self.overlaps(schedule.total(), schedule.total()+event[1], others):
-                        schedule.events.append(event)
-                    else:
-                        pass
+                for activity in activities:
+                    overlapping_events = self.overlaps(schedule.total(), schedule.total()+activity[1], others)
+                    if activity not in schedule.agenda and activity not in overlapping_events:
+                        schedule.agenda.append(activity)
+                        break
+                else:
+                    self.recursion_count += 1
+                    if self.recursion_count > 995:
+                        raise OverflowError("""The operation recursed 995 times and hence it was stopped
+                                                as it was in danger of exceeding python's recursion
+                                                depth limit of 1000 and crashing.""")
+                    return self.scheduler(teams, path)
 
         return schedules
 
@@ -124,7 +125,7 @@ class Scheduler():
 
         formatted_schedules = []
 
-        for event in schedule.events:
+        for event in schedule.agenda:
             time = nine + dt.timedelta(minutes=elapsed)
             elapsed += event[1]
             if event[1] == 15:
@@ -138,17 +139,14 @@ class Scheduler():
 
         return formatted_schedules
 
-
     def output(self, schedules):
         """
         Prints a list of formatted schedules
 
         :param schedules: list
         """
-
         for index, schedule in enumerate(schedules):
             print
             print "Team "+str(index+1)+":"
             for activity in self.make_schedule(schedule):
                 print activity
-

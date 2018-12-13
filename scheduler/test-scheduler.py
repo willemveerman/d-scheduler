@@ -5,13 +5,13 @@ class SchedulerTestCase(unittest.TestCase):
     def setUp(self):
         self.scheduler = Scheduler()
 
-        self.schedules = self.scheduler.scheduler(7, 'activities.txt',risky=False)
+        self.schedules = self.scheduler.scheduler(10, 'activities.txt')
 
         self.schedules_1 = Schedule()
         self.schedules_2 = Schedule()
 
-        self.schedules_1.events = [('Giant Puzzle Dinosaurs', 30), ('Enigma Challenge', 45), ('Human Table Football', 30)]
-        self.schedules_2.events = [('Salsa & Pickles', 15), ('Indiano Drizzle', 45), ('Buggy Driving', 30)]
+        self.schedules_1.agenda = [('Giant Puzzle Dinosaurs', 30), ('Enigma Challenge', 45), ('Human Table Football', 30)]
+        self.schedules_2.agenda = [('Salsa & Pickles', 15), ('Indiano Drizzle', 45), ('Buggy Driving', 30)]
 
 class TestSchedulerFileParser(SchedulerTestCase):
     def test_file_parser_type(self):
@@ -38,7 +38,7 @@ class TestSchedulerMakeSchedule(SchedulerTestCase):
             self.assertTrue(len(overlaps) == len(event_set))
 
 a=Scheduler()
-b=a.scheduler(6,'activities.txt', risky=False)
+b=a.scheduler(5,'activities.txt')
 a.output(b)
 
 if __name__ == '__main__':
