@@ -51,6 +51,6 @@ The script will not schedule an event that overlaps with lunch or the end-of-day
 
 ## Update 13/12/2019
 
-I found a bug in my code. I have now fixed it by adding a recursive statement. With the activities provided in the case-study it is possible to create a rota for 14 teams or less; if the user tries to create schedules for more than 14 teams using these acitivities the code will throw an error.
+I found a bug in my code. I have now fixed it by adding a recursive statement. With the activities provided in the case-study it is possible to create a rota for 14 teams or less; the code will throw an error if the user tries to create schedules for more than 14 teams using the provided acitivities.
 
-Because of the random approach that I have taken, when scheduling for 14 teams, the function can make hundreds of attempts before it finds a set of schedules which don't overlap. Hence, I have inserted a catch to prevent the code from reaching python's recursion limit and crashing inelegantly, although this comes at a cost of occasionally not providing the output sought by the user. The recursion limit can be altered, one potential addition to this script would be to offer a mechanism to effect that.
+Because of the random approach that I have taken, when scheduling for 14 teams, the function can make hundreds of attempts before it finds a set of schedules which don't overlap. Hence, I have inserted a catch to prevent the code from reaching python's recursion limit and crashing, although this comes at a cost of occasionally not providing the output sought by the user. Python's recursion limit can be altered - one potential addition to this script would be to offer a mechanism to effect that.
