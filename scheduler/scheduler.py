@@ -2,7 +2,7 @@ import re
 import random
 import datetime as dt
 
-class Schedule():
+class Schedule:
     """
     A schedule for a single team
     """
@@ -19,7 +19,7 @@ class Schedule():
         return sum([event[1] for event in self.agenda])
 
 
-class Scheduler():
+class Scheduler:
 
     def __init__(self):
         self.recursion_count = 0
@@ -83,7 +83,7 @@ class Scheduler():
             raise ValueError("Scheduling for more than 14 teams with the current set of activities is impossible.")
 
         random.shuffle(activities)
-
+        
         lunch = ('Lunch Break', 60)
 
         schedules = []
@@ -95,16 +95,15 @@ class Scheduler():
             while schedule.total() <= 420:
                 if schedule.total() > 120 and lunch not in schedule.agenda:
                     schedule.agenda.append(lunch)
-                others = schedules[:index]+schedules[index+1:]  # every schedule except the one in the loop
                 for activity in activities:
-                    overlapping_events = self.overlaps(schedule.total(), schedule.total()+activity[1], others)
+                    overlapping_events = self.overlaps(schedule.total(), schedule.total()+activity[1], schedules[:index])
                     if activity not in schedule.agenda and activity not in overlapping_events:
                         schedule.agenda.append(activity)
                         break
                 else:
                     self.recursion_count += 1
-                    if self.recursion_count > 995:
-                        raise OverflowError("""The operation recursed 995 times and hence it was stopped
+                    if self.recursion_count > 990:
+                        raise OverflowError("""The operation recursed 990 times and hence it was stopped
                                                 as it was in danger of exceeding python's recursion
                                                 depth limit of 1000 and crashing.""")
                     return self.scheduler(teams, path)
